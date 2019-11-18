@@ -9,8 +9,10 @@ import matplotlib.pyplot as plt
 import time
 import os
 import copy
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-num_epochs = 1
+num_epochs = 70
 num_classes = 15
 batch_size = 50
 learning_rate = 0.0001
@@ -236,5 +238,3 @@ criterion = nn.CrossEntropyLoss()
 
 # Train and evaluate
 model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft, num_epochs)
-
-torch.save(model_ft.state_dict(), "Images")
