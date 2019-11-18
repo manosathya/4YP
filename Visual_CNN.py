@@ -235,3 +235,4 @@ criterion = nn.CrossEntropyLoss()
 
 # Train and evaluate
 model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft, num_epochs)
+torch.save(model_ft.state_dict(), "Images")
