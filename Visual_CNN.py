@@ -3,9 +3,7 @@ from __future__ import division
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import numpy as np
 from torchvision import datasets, models, transforms
-import matplotlib.pyplot as plt
 import time
 import os
 import copy
@@ -37,7 +35,7 @@ training returns the best performing model. After each epoch, the
 training and validation accuracies are printed.
 """
 
-def train_model(model, dataloaders, criterion, optimizer, num_epochs=70):
+def train_model(model, dataloaders, criterion, optimizer, num_epochs):
     
     since = time.time()
     val_acc_history = []
@@ -167,7 +165,7 @@ model_ft, input_size = initialize_model(num_classes, feature_extract, use_pretra
 # Just normalization for validation
 data_transforms = {
     'train': transforms.Compose([
-        transforms.RandomResizedCrop(input_size),
+        transforms.Resize(input_size),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
@@ -184,7 +182,7 @@ print("Initializing Datasets and Dataloaders...")
 # Create training and validation datasets
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_path, x), data_transforms[x]) for x in ['train', 'val']}
 # Create training and validation dataloaders
-dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size, shuffle=True, num_workers=0) for x in ['train', 'val']}
+dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size, shuffle=True, num_workers=4) for x in ['train', 'val']}
 
 # Detect if we have a GPU available
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -233,7 +231,6 @@ else:
 optimizer_ft = optim.Adam(params_to_update, learning_rate)
 criterion = nn.CrossEntropyLoss()
 
+
 # Train and evaluate
 model_ft, hist = train_model(model_ft, dataloaders_dict, criterion, optimizer_ft, num_epochs)
-
-torch.save(model_ft.state_dict(), "Images")
