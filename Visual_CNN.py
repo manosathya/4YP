@@ -7,6 +7,8 @@ from torchvision import datasets, models, transforms
 import time
 import os
 import copy
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 num_epochs = 70
 num_classes = 15
